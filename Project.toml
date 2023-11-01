@@ -1,0 +1,31 @@
+name = "PepCluster"
+uuid = "bca3c690-68fc-4e98-8b73-0a8d550efc73"
+authors = ["viniciuspiccoli and contributors"]
+version = "1.0.0-DEV"
+
+[deps]
+CellListMap = "69e1c6dd-3888-40e6-b3c8-31ac5f578864"
+Chemfiles = "46823bd8-5fb3-5f92-9aa0-96921f3dd015"
+Clustering = "aaaa29a8-35af-508c-8bc3-b662a17a0fe5"
+DataFrames = "a93c6f00-e57d-5684-b7b6-d8193f3e46c0"
+Distances = "b4f34e82-e78d-54a5-968a-f98e89d6e8f7"
+EasyFit = "fde71243-0cda-4261-b7c7-4845bd106b21"
+FortranFiles = "c58ffaec-ab22-586d-bfc5-781a99fd0b10"
+LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
+LsqFit = "2fda8390-95c7-5789-9bda-21331edee243"
+PDBTools = "e29189f1-7114-4dbd-93d0-c5673a921a58"
+Polynomials = "f27b6e38-b328-58d1-80ce-0feddd5e7a45"
+Printf = "de0858da-6303-5e67-8744-51eddeeeb8d7"
+StaticArrays = "90137ffa-7385-5640-81b9-e52037218182"
+Statistics = "10745b16-79ce-11e8-11f9-7d13ad32a3b2"
+StatsBase = "2913bbd2-ae8a-5f71-8c99-4fb6c76f3a91"
+StructTypes = "856f2bd8-1eba-4b0a-8007-ebc267875bd4"
+
+[compat]
+julia = "1.9"
+
+[extras]
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+
+[targets]
+test = ["Test"]
