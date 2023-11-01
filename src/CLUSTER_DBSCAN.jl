@@ -36,6 +36,7 @@ max_sizes = []
 total_numbers = []
 
 # data
+#dir="/home/viniciusp/Insync/viniciuspiccoli2008@hotmail.com/OneDrive/Documents_linux/doutorado/GLUCOSE_WORK/CLUSTER_SIZE/size_tests/10"
 solute_sel = "protein"
 nmols = 15
 pdbfile = "processed.pdb"

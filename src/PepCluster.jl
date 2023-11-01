@@ -15,7 +15,6 @@ module PepCluster
   using StatsBase
   using Statistics
 
-
   include("Selection.jl")
   include("FileOperations.jl")  
   include("viewmol.jl") 
@@ -25,7 +24,9 @@ module PepCluster
   include("ChemFiles.jl")
   include("NamdDCD.jl")
   include("PDBTraj.jl")
-  
+   
+  include("Cluster_func.jl")
+
 
   function trajectory_data(solute_sel::String, pdbfile::String, xtcfile::String, nmols::Int64)
     atoms = PDBTools.readPDB(pdbfile)         # selection of all atoms from the pdb
