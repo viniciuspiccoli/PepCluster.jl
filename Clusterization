@@ -1,0 +1,176 @@
+### A Pluto.jl notebook ###
+# v0.19.30
+
+using Markdown
+using InteractiveUtils
+
+# ╔═╡ 32fe1e14-a314-47f8-9206-130e2b93fdbd
+begin
+	using Pkg
+	Pkg.add(url="https://github.com/viniciuspiccoli/PepCluster")
+	
+end
+
+# ╔═╡ 3653b1ac-9546-11ea-2a44-ddd3054636fe
+begin
+	using PepCluster
+	using Plots
+	using Plots.Measures
+	using LaTeXStrings
+end
+
+# ╔═╡ b129ba7c-953a-11ea-3379-17adae34924c
+md"# _Topics concerning the analysis of the peptides clusterization!_
+
+test for equations...
+$\text{If } |N_{\epsilon}(x)| \geq \text{MinPts}$
+
+"
+
+# ╔═╡ 4d88b926-9543-11ea-293a-1379b1b5ae64
+md""" ## Explanation of K-means vs DBSCAN
+
+K-means and DBSCAN are two popular clustering algorithms used in data analysis, but they differ significantly in their approaches and applications.
+
+**K-means** is a centroid-based algorithm that partitions the data into K distinct clusters. It tries to minimize the variance within each cluster, which is the sum of the squared distances between the data points and the cluster's centroid. K-means works well with spherical clusters of similar size and density. However, it requires the number of clusters to be specified in advance and can struggle with clusters of varying sizes and densities.
+
+**DBSCAN (Density-Based Spatial Clustering of Applications with Noise)**, on the other hand, is a density-based clustering algorithm. It identifies clusters as high-density areas separated by areas of low density. DBSCAN does not require specifying the number of clusters beforehand, which is a significant advantage over K-means. It can find arbitrarily shaped clusters and can handle noise and outliers effectively. However, DBSCAN's performance is heavily dependent on the distance metric and the choice of the parameters `ε` (eps) and `MinPts`.
+
+In summary, K-means is simple to implement and works well for a large range of simple clustering problems, while DBSCAN is more robust to outliers and can identify clusters with complex shapes, making it suitable for applications where the cluster structure is not known in advance.
+"""
+
+
+
+
+
+
+# ╔═╡ dd95659c-cc26-4614-8a41-92dbcafc708d
+
+
+html"""<div style="text-align: center;"> <img src="https://media.geeksforgeeks.org/wp-content/uploads/PicsArt_11-17-08.07.10-300x300.jpg" alt="Cluster Analysis" title="Cluster Analysis Diagram" style="width: 400px;"/></div>"""
+
+
+
+
+# ╔═╡ e0642f42-9545-11ea-14ee-fde52cb54ccc
+md"## Implementation
+"
+
+# ╔═╡ 19ff8d36-9547-11ea-0e08-e5cdd8338673
+md"Define the data struct for a test of the Clustering analysis"
+
+# ╔═╡ a4a60262-9547-11ea-3a81-5bf7f9ee5d16
+Data = data_info()
+
+# ╔═╡ 270ac49e-9549-11ea-3ffd-71ddaee9f134
+md" Computation of the clusters using the DBSCAN algorithm "
+
+# ╔═╡ 745a4584-954a-11ea-028e-59011f268ec6
+max_sizes, total_numbers, cluster_size_freq , natoms_per_peptide = cluster_dbscan(Data) 
+
+# ╔═╡ be1cad55-b1db-47f7-8b4c-54548e5c822a
+md"""
+To cluster points using the defined function, you would call it as follows:
+
+\``` julia
+
+cluster_points(data_points, initial_centroids)
+
+\```
+
+This code block is just for illustration and won't be executed.
+"""
+
+
+# ╔═╡ f33032f6-4f70-4179-b47a-6652f13c8e2a
+cluster_size_freq_normalized = cluster_size_freq ./ sum(cluster_size_freq)
+
+# ╔═╡ ecb52c15-5ad3-4b29-aa95-548084cca85c
+min_freq, max_freq = extrema(cluster_size_freq_normalized);
+
+# ╔═╡ 0df1a510-aaa4-47cf-ab45-ee33f29c79e9
+tN_max = maximum(max_sizes) / natoms_per_peptide 
+
+# ╔═╡ 52f9d8cb-00dc-4582-be43-ce8e0ac189e6
+sz_max = maximum(total_numbers)
+
+# ╔═╡ 6c8e2108-9550-11ea-014d-235770ed4771
+md"## Plotting"
+
+# ╔═╡ 9e89fc9a-9550-11ea-14b4-7f0e96225ec0
+custom_gradient = cgrad([:white, :red, :darkred])
+
+# ╔═╡ 36cd006a-9551-11ea-3c0c-df8b7f2843c1
+heatmap(cluster_size_freq_normalized',
+               c=custom_gradient,
+               ylabel="Cluster Size",
+               xlabel="Number of clusters",
+               title="Cluster Size Distribution",
+               color=:auto,
+               xlims=(0,tN_max),
+               ylims=(0,sz_max),  
+               clims=(min_freq, max_freq),
+               colorbar_title="Frequency")
+
+# ╔═╡ 9e4c62d6-810e-41de-81c0-8f6efbb6e6c7
+begin 
+
+	plot_font="Computer Modern"
+	default(legend=:topright,
+       fontfamily=plot_font,
+       linewidth=2, framestyle=:box,
+       grid=false)
+	#scalefontsizes(1.5)
+	gr(dpi=450)
+	plot(layout=(1,1))
+	plot!(subplot=1,ylabel=L"\textrm{Number\ of\ Clusters}", xlabel=L"\textrm{Frames}")
+	plot!(subplot=1, total_numbers, linewidth=2, color="gray", alpha=0.5, yticks=0:1:13)
+
+
+
+end
+
+# ╔═╡ 99a6c9de-99ab-44f8-99a9-95cf3ab1ca40
+begin
+	default(legend=:topright,
+       fontfamily=plot_font,
+       linewidth=2, framestyle=:box,
+       grid=false)
+	#scalefontsizes(1.5)
+	gr(dpi=450)
+	plot(layout=(1,1))
+	plot!(subplot=1,ylabel=L"\textrm{Number\ of\ Clusters}", xlabel=L"\textrm{Frames}")
+	plot!(subplot=1, max_sizes ./ 115, linewidth=2, color="blue", alpha=0.5)
+
+
+
+
+
+end
+
+# ╔═╡ 9d3af596-9554-11ea-21bd-bf427c91c424
+md"## ⚡ Perspectives ⚡
+"
+
+# ╔═╡ Cell order:
+# ╟─b129ba7c-953a-11ea-3379-17adae34924c
+# ╟─4d88b926-9543-11ea-293a-1379b1b5ae64
+# ╟─dd95659c-cc26-4614-8a41-92dbcafc708d
+# ╟─e0642f42-9545-11ea-14ee-fde52cb54ccc
+# ╠═32fe1e14-a314-47f8-9206-130e2b93fdbd
+# ╠═3653b1ac-9546-11ea-2a44-ddd3054636fe
+# ╟─19ff8d36-9547-11ea-0e08-e5cdd8338673
+# ╟─a4a60262-9547-11ea-3a81-5bf7f9ee5d16
+# ╟─270ac49e-9549-11ea-3ffd-71ddaee9f134
+# ╠═745a4584-954a-11ea-028e-59011f268ec6
+# ╠═be1cad55-b1db-47f7-8b4c-54548e5c822a
+# ╠═f33032f6-4f70-4179-b47a-6652f13c8e2a
+# ╠═ecb52c15-5ad3-4b29-aa95-548084cca85c
+# ╠═0df1a510-aaa4-47cf-ab45-ee33f29c79e9
+# ╠═52f9d8cb-00dc-4582-be43-ce8e0ac189e6
+# ╟─6c8e2108-9550-11ea-014d-235770ed4771
+# ╠═9e89fc9a-9550-11ea-14b4-7f0e96225ec0
+# ╠═36cd006a-9551-11ea-3c0c-df8b7f2843c1
+# ╠═9e4c62d6-810e-41de-81c0-8f6efbb6e6c7
+# ╠═99a6c9de-99ab-44f8-99a9-95cf3ab1ca40
+# ╟─9d3af596-9554-11ea-21bd-bf427c91c424

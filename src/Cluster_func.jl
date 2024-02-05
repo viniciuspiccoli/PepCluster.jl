@@ -20,8 +20,8 @@ end
 export data_info
 @with_kw struct data_info
     solute_sel :: String = "protein"
-    pdbfile    :: String = "processed.pdb" 
-    xtcfile    :: String = "processed.xtc"
+    pdbfile    :: String = "./src/processed.pdb" 
+    xtcfile    :: String = "./src/processed.xtc"
     nmols      :: Int64 = 15
     distance_threshold :: Float64 = 3.5
 end
@@ -39,7 +39,7 @@ function cluster_dbscan(data::data_info)
 
     # trajectory data
     peptide_coords, box_sides, nframes = trajectory_data(solute_sel, pdbfile, xtcfile, nmols)
-    distance_threshold = 3.5  # In Ångströms
+    distance_threshold = data.distance_threshold   # In Ångströms
     natoms_total = size(peptide_coords, 2)    # total number of atoms
     if natoms_total % nmols != 0
         error("Total number of atoms is not divisible by the number of peptides. Please check your input data.")
@@ -51,7 +51,9 @@ function cluster_dbscan(data::data_info)
     for frame in 1:nframes
         coords = hcat(peptide_coords[frame, :]...) # this part is critical in terms of RAM
         # Apply DBSCAN
-        db_result = dbscan(coords, distance_threshold) # , min_neighbors=1*natoms_per_peptide, min_cluster_size=2*natoms_per_peptide)
+        #db_result = dbscan(coords, distance_threshold) # , min_neighbors=1*natoms_per_peptide, min_cluster_size=2*natoms_per_peptide)
+        db_result = dbscan(coords, distance_threshold, min_cluster_size=115) # , min_neighbors=1*natoms_per_peptide, min_cluster_size=2*natoms_per_peptide)
+
         # Identify the biggest cluster
         #biggest_cluster_idx = argmax(db_result.counts)
         #biggest_cluster_points = findall(x -> db_result.assignments[x] == biggest_cluster_idx, 1:natoms_total)
