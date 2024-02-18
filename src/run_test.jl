@@ -3,15 +3,25 @@ using PepCluster, Plots, Plots.Measures, LaTeXStrings
 
 #Data = data_info()
 
-dir = "/home/viniciusp/Insync/viniciuspiccoli2008@hotmail.com/OneDrive/Documents_linux/doutorado/GLUCOSE_WORK/water/water_nmols_15/10"
+#dir = "/home/viniciusp/Insync/viniciuspiccoli2008@hotmail.com/OneDrive/Documents_linux/doutorado/GLUCOSE_WORK/water/water_nmols_15/10"
 
 Data = data_info(
                      solute_sel="protein",
-                     pdbfile="/home/viniciusp/Documents/GLUCOSE/gl_1M/01/protein_only.pdb",
-                     xtcfile="/home/viniciusp/Documents/GLUCOSE/gl_1M/01/protein_only.xtc",
+                     pdbfile="/Users/vpicco01/Insync/viniciuspiccoli2008@hotmail.com/OneDrive/Pep_agreggation/PepCluster.jl/processed.pdb",
+                     xtcfile="/Users/vpicco01/Insync/viniciuspiccoli2008@hotmail.com/OneDrive/Pep_agreggation/PepCluster.jl/processed.xtc",
                      nmols=15,
                      distance_threshold=3.5)
 
+
+
+
+#Data = data_info(
+#                     solute_sel="protein",
+#                     pdbfile="/home/viniciusp/Documents/GLUCOSE/gl_1M/01/protein_only.pdb",
+#                     xtcfile="/home/viniciusp/Documents/GLUCOSE/gl_1M/01/protein_only.xtc",
+#                     nmols=15,
+#                     distance_threshold=3.5)
+#
 
 #Data = data_info(
 #                     solute_sel="protein",
